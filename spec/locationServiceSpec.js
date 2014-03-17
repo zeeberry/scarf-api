@@ -70,7 +70,7 @@ describe('A locationService', function(){
 		expect(scarf).toBeDefined();
 	});
 
-	describe('makes a request to an api', function(){
+	describe('makes a request to the api', function(){
 
 		describe('and receives a valid response', function(){
 

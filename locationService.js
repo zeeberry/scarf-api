@@ -65,7 +65,8 @@ LocationService.prototype.setPath = function(){
 };
 
 LocationService.prototype.httpRequest = function() {
-	var http = require('http'),
+	var that = this,
+	    http = require('http'),
 	    options = {
 		host: this.baseUrl,
 		path: this.path
@@ -76,7 +77,7 @@ LocationService.prototype.httpRequest = function() {
 			str += chunk;
 		});
 		response.on('end', function(){
-			console.log(str);
+			that.setScarf(str);
 		});
 	    };
 	
@@ -87,10 +88,16 @@ LocationService.prototype.getScarf = function(){
 	return this.scarf;
 };
 
-LocationService.prototype.getShouldWearScarf = function(response){
+LocationService.prototype.setScarf = function(response) {
+	this.setShouldWearScarf(response);
+}
+LocationService.prototype.setShouldWearScarf = function(response){
 	var wind_min = response.current_observation.wind_mph,
 	    wind_max = response.current_observation.wind_gust_mph;
-	return (wind_min + wind_max)/2 > 15 ? true : false;
+	this.scarf.data.should_wear_scarf = (wind_min + wind_max)/2 > 15 ? true : false;
+};
+LocationService.prototype.getShouldWearScarf = function() {
+	return this.scarf.data.should_wear_scarf;
 };
 
 LocationService.prototype.getDisplayLocation = function(response){
