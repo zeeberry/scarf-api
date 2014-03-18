@@ -76,7 +76,9 @@ describe('A locationService', function(){
 
 			it('should properly set should wear scarf', function(){
 				var service = new module.LocationService(40.685517, -73.947554),
-				    shouldWearScarf = service.getShouldWearScarf(weatherFixture.weatherFixture);
+				    shouldWearScarf;
+				service.httpRequest(service.setScarf);
+				shouldWearScarf = service.getShouldWearScarf(weatherFixture.weatherFixture);
 				expect(shouldWearScarf).toBe(false);
 			});
 
