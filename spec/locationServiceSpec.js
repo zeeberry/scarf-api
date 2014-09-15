@@ -26,18 +26,16 @@ describe('A locationService', function(){
 		expect(longitude).toBe(-73.947554);
 	});
 
-	it('should throw an error if invalid latitude', function(){
-		var testFn = function(){
-			new module.LocationService(94.685517, -73.947554);
-	    	};
-		expect(testFn).toThrow(new Error('invalid latitude'));
+	it('should set an error if invalid latitude', function(){
+		var service = new module.LocationService(94.685517, -73.947554),
+            error = service.getError().length;
+		expect(error).toBeGreaterThan(0);
 	});
 
-	it('should throw an error if invalid longitude', function(){
-		var testFn = function(){
-			new module.LocationService(40.685517, -183.94755);
-		};
-		expect(testFn).toThrow(new Error('invalid longitude'));
+	it('should set an error if invalid longitude', function(){
+		var service = new module.LocationService(40.685517, -183.94755),
+            error = service.getError().length;
+		expect(error).toBeGreaterThan(0);
 	});
 
 	it('should have a base url', function(){
@@ -77,34 +75,55 @@ describe('A locationService', function(){
 			it('should properly set should wear scarf', function(){
 				var service = new module.LocationService(40.685517, -73.947554),
 				    shouldWearScarf;
-				service.httpRequest(service.setScarf);
-				shouldWearScarf = service.getShouldWearScarf(weatherFixture.weatherFixture);
+				service.setShouldWearScarf(weatherFixture.weatherFixture);
+                shouldWearScarf = service.getShouldWearScarf();
 				expect(shouldWearScarf).toBe(false);
 			});
 
 			it('should properly set display location', function(){
 				var service = new module.LocationService(40.685517, -73.947554),
-				    displayLocation = service.getDisplayLocation(weatherFixture.weatherFixture);
+                    displayLocation;
+                service.setDisplayLocation(weatherFixture.weatherFixture);
+                displayLocation = service.getDisplayLocation(weatherFixture.weatherFixture);
 				expect(displayLocation).toBe('Brooklyn, NY');
 			});
 			
 			it('should properly set average speed in mph', function(){
 				var service = new module.LocationService(40.685517, -73.947554),
-				    avgWindSpeedMph = service.getAvgWindMph(weatherFixture.weatherFixture);
+				    avgWindSpeedMph;
+                service.setAvgWindMph(weatherFixture.weatherFixture);
+                avgWindSpeedMph = service.getAvgWindMph();
 				expect(avgWindSpeedMph).toBe(3.0);
 			});
 		
 			it('should properly set average speed in kph', function(){
 				var service = new module.LocationService(40.685517, -73.947554),
-                                    avgWindSpeedKph = service.getAvgWindKph(weatherFixture.weatherFixture);
-                                expect(avgWindSpeedKph).toBe(4.8);
+                    avgWindSpeedKph;
+                service.setAvgWindKph(weatherFixture.weatherFixture);
+                avgWindSpeedKph = service.getAvgWindKph();
+                expect(avgWindSpeedKph).toBe(4.8);
 			});
-			/*it('should properly format the weather json as scarf json', function(){
-				var service = new module.LocationService(40.685517, -73.947554),
-				    scarf = service.formatScarf(weatherFixture);
-				expect(scarf).toBe(scarfFixture);		
-			});*/
-
+            
+            it('should properly set the scarf obj with data', function(){
+                var service = new module.LocationService(40.685517, -73.947554),
+                    mockScarf = {
+                        success: true,
+                        data: {
+                            should_wear_scarf : false ,
+                            average_wind_speed : {
+                               mph: 3.0,
+                               kph: 4.8
+                            },
+                            location : "Brooklyn, NY"
+                        }
+                    },
+                    scarf;
+                service.setScarf(weatherFixture.weatherFixture);
+                scarf = service.getScarf();
+                scarf = JSON.stringify(scarf);
+                mockScarf = JSON.stringify(mockScarf);
+                expect(scarf).toBe(mockScarf);
+            });
 		});
 		describe('and receives an invalid response', function(){
 
