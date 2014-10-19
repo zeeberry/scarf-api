@@ -16,5 +16,8 @@
 	"express": "3.x",
 	"jasmine-node" : "*"
   },
+  "engines": {
+    "node": "0.8.19"
+  },
   "repository": "https://github.com/coffee-beans/scarf-api"
 }
