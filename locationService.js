@@ -28,7 +28,7 @@ var LocationService = function(lat, long) {
         }
 	};
     
-    logger.log('info', 'LocationService - locationService instantiated');
+    logger.log('info', 'Location Service - locationService instantiated');
 	
 };
 LocationService.prototype.setLatitude = function(latitude){
