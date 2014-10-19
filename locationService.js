@@ -8,6 +8,7 @@ var logger = require('./logger');
 logger.debugLevel = 'info';
 
 var LocationService = function(lat, long) {
+    logger.log('info', 'Location Service - Instantiating locationService');
     this.errors = [];
 	this.latitude = this.setLatitude(lat);
 	this.longitude = this.setLongitude(long);
@@ -27,7 +28,7 @@ var LocationService = function(lat, long) {
         }
 	};
     
-    logger.log('info', 'LocationService instantiated');
+    logger.log('info', 'LocationService - locationService instantiated');
 	
 };
 LocationService.prototype.setLatitude = function(latitude){
